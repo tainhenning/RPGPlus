@@ -17,10 +17,7 @@ SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gHelloWorld = NULL; 
 bool init()
 {
-	//Initialization flag
 	bool success = true;
-
-	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
@@ -28,7 +25,6 @@ bool init()
 	}
 	else
 	{
-		//Create window
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
@@ -37,7 +33,6 @@ bool init()
 		}
 		else
 		{
-			//Get window surface
 			gScreenSurface = SDL_GetWindowSurface( gWindow );
 		}
 	}
@@ -81,12 +76,25 @@ int main( int argc, char* args[] )
 			printf("Media Failed\n");
 		}
 		else
-		{
-			SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
-			SDL_UpdateWindowSurface(gWindow);
-			SDL_Delay(2000);
+		{			
+			bool quit = false;
+			SDL_Event e;
+			while( !quit )
+			{
+				while( SDL_PollEvent( &e ) != 0 )
+				{
+					if( e.type == SDL_QUIT )
+					{
+						quit = true;
+					}
+				}
+				SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );
+				SDL_UpdateWindowSurface( gWindow );
+			}
 		}
 	}
+
+
 	close();
 
 	return 0;
