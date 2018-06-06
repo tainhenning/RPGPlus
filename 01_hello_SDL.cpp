@@ -3,6 +3,7 @@ and may not be redistributed without written permission.*/
 
 //Using SDL and standard IO
 #include <SDL.h>
+#include <SDL_image.h>
 #include <stdio.h>
 #include <string>
 const int SCREEN_WIDTH = 1920;
@@ -25,7 +26,7 @@ SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gKeyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
 SDL_Surface* gCurrentSurface = NULL;
 SDL_Surface* gHelloWorld = NULL;
-
+SDL_Renderer* gRenderer = NULL;
 
 
 bool init()
@@ -46,7 +47,16 @@ bool init()
 		}
 		else
 		{
-			gScreenSurface = SDL_GetWindowSurface( gWindow );
+			int imgFlags = IMG_INIT_PNG;
+			if(!(IMG_Init(imgFlags) & imgFlags))
+			{
+				printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() ); 
+				success = false;				
+			}
+			else
+			{
+				gScreenSurface = SDL_GetWindowSurface( gWindow );
+			}
 		}
 	}
 
@@ -56,7 +66,7 @@ bool init()
 SDL_Surface* loadSurface(std::string path)
 {
 	SDL_Surface* optimizedSurface = NULL;
-	SDL_Surface* loadedSurface = SDL_LoadBMP(path.c_str());
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if(loadedSurface == NULL)
 	{
 		printf("Cannot load image! Error: %s\n", SDL_GetError());
@@ -77,7 +87,7 @@ bool loadMedia()
 {
 	bool success = true;
 
-	gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT] = loadSurface("./images/press.bmp");
+	gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT] = loadSurface("./images/loaded.png");
 	if(gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT]== NULL)
 		success = false;
 	gKeyPressSurfaces[KEY_PRESS_SURFACE_LEFT] = loadSurface("./images/left.bmp");
