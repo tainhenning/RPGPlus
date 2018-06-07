@@ -44,8 +44,8 @@ void LTexture::render(int x, int y,SDL_Rect* clip, SDL_Renderer* gRenderer)
 	SDL_Rect renderQuad = {x,y,mWidth,mHeight};
 	if(clip!=NULL)
 	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
+		renderQuad.w = clip->w * 10;
+		renderQuad.h = clip->h * 10;
 	}
 	SDL_RenderCopy(gRenderer, mTexture, clip, &renderQuad);
 }

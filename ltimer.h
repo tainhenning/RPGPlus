@@ -1,3 +1,6 @@
+#ifndef LTIMER_H
+#define LTIMER_H
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
@@ -18,3 +21,4 @@ class LTimer{
 		bool mPaused;
 		bool mStarted;
 };
+#endif

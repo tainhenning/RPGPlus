@@ -1,5 +1,5 @@
-#ifndef main
-#define main
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -29,4 +29,4 @@ SDL_Surface* gHelloWorld = NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gTexture = NULL;
 
-#endif main
+#endif
