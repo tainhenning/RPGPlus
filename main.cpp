@@ -2,6 +2,7 @@
 #include "main.h"
 #include "load.h"
 #include "player.h"
+#include "ltimer.h"
 #include "loadTexture.h"
 
 SDL_Rect playerClips[PLAYER_TOTAL];
@@ -90,13 +91,14 @@ int main( int argc, char* args[] )
 	loadMedia();
 	playerInit();
 	bool quit = false;
+	int playerFrame = 0;
+	int prevPlayerFrame = 0;
+	int playerFrameSet = 0;
+	int playerFrameMax = 0;
 	int frame = 0;
 	SDL_Event e;
-	Uint8 r = 255;
-	Uint8 g = 255;
-	Uint8 b = 255;
-	std::stringstream timeText;
-	int currentTime = 0;
+	LTimer fpsTimer;
+	fpsTimer.start();
 	while( !quit )
 	{
 		while( SDL_PollEvent( &e ) != 0 )
@@ -105,22 +107,86 @@ int main( int argc, char* args[] )
 			{
 				quit = true;
 			}
+			else if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
+			{
+				switch(e.key.keysym.sym)
+				{
+					case SDLK_UP:
+						playerFrame = 0;
+						prevPlayerFrame = playerFrame;
+						playerFrameSet = 0;
+						playerFrameMax = 3;
+						break;
+					case SDLK_DOWN:
+						playerFrame = 3;
+						prevPlayerFrame = playerFrame;
+						playerFrameSet = 3;
+						playerFrameMax = 3;
+						break;
+					case SDLK_LEFT:
+						playerFrame = 3;
+						prevPlayerFrame = playerFrame;
+						playerFrameSet = 6;
+						playerFrameMax = 3;
+						break;
+					case SDLK_RIGHT:
+						playerFrame = 3;
+						prevPlayerFrame = playerFrame;
+						playerFrameSet = 9;
+						playerFrameMax = 3;
+						break;
+				}
+
+			}
+			else if(e.type == SDL_KEYUP)
+			{
+				switch(e.key.keysym.sym)
+				{
+					case SDLK_UP:
+						playerFrame = 0;
+						playerFrameSet = 0;
+						playerFrameMax = 0;
+						break;
+					case SDLK_DOWN:
+						playerFrame = 3;
+						playerFrameSet = 3;
+						playerFrameMax = 0;
+						break;
+					case SDLK_LEFT:
+						playerFrame = 6;
+						playerFrameSet = 6;
+						playerFrameMax = 0;
+						break;
+					case SDLK_RIGHT:
+						playerFrame = 9;
+						playerFrameSet = 9;
+						playerFrameMax = 0;
+						break;
+				}
+
+			}
 		}
-		SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+
+		float avgFPS = frame/(fpsTimer.getTicks()/1000.f);
+		if(avgFPS > 2000000)
+			avgFPS = 0;
+
+		SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
 		SDL_RenderClear( gRenderer );
-		SDL_Rect* currentClip = &playerClips[frame/12];
-		playerSpriteSheetTexture.setColor(r/3,g,b);
+
+		SDL_Rect* currentClip = &playerClips[(playerFrame)/6 + playerFrameSet];
 		playerSpriteSheetTexture.render(100,100,currentClip, gRenderer);
 
 		SDL_RenderPresent(gRenderer);
 
+		++playerFrame;
 		++frame;
-		if(frame/12 >= PLAYER_TOTAL)
+
+		if(playerFrame/6 >= playerFrameMax)
 		{
-			frame = 0;
+			playerFrame = prevPlayerFrame;
 		}
-		if(currentTime + SDL_GetTicks() == 1)
-			printf("passed");
+
 	}
 	close();
 	return 0;
