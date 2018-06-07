@@ -1,8 +1,5 @@
-#hellomake: 
-#	 g++ 01_hello_SDL.cpp -IC:\mingw_dev_lib\include\SDL2 -LC:\mingw_dev_lib\lib -w -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2 -o hellosdl 	
-
 #OBJS specifies which files to compile as part of the project 
-OBJS = 01_hello_SDL.cpp 
+OBJS = main.cpp main.h load.cpp load.h loadTexture.h loadTexture.cpp
 #CC specifies which compiler we're using 
 CC = g++ 
 #INCLUDE_PATHS specifies the additional include paths we'll need 
