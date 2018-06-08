@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <string>
 
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+const int LEVEL_WIDTH = 1280;
+const int LEVEL_HEIGHT = 960;
 enum KeyPressSurfaces
 {
 	KEY_PRESS_SURFACE_DEFAULT, 

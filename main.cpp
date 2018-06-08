@@ -1,28 +1,9 @@
-#include <sstream>
 #include "main.h"
 #include "load.h"
 #include "player.h"
 #include "ltimer.h"
 #include "loadTexture.h"
-enum playerFramesEnum
-{
-	PLAYER_BACK1,
-	PLAYER_BACK2,
-	PLAYER_BACK3,
-	PLAYER_FRONT1,
-	PLAYER_FRONT2,
-	PLAYER_FRONT3,
-	PLAYER_LEFT1,
-	PLAYER_LEFT2,
-	PLAYER_LEFT3,
-	PLAYER_RIGHT1,
-	PLAYER_RIGHT2,
-	PLAYER_RIGHT3,
-	PLAYER_TOTAL
-};
-
-SDL_Rect playerClips[PLAYER_TOTAL];
-
+LTexture gBGTexture;
 bool init()
 {
 	bool success = true;
@@ -39,7 +20,7 @@ bool init()
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -82,48 +63,70 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 }
-
 bool loadMedia()
 {
 	bool success = true;
-	for(int i = 0; i<PLAYER_TOTAL;i++)
-	{
-		playerClips[i].x = 0;
-		playerClips[i].y = i*25;
-		playerClips[i].w = 16;
-		playerClips[i].h = 24;
-	}
-
+	gBGTexture.loadFromFile("images/bg.png", gRenderer);
 	return success;
 }
-
-
 
 int main( int argc, char* args[] )
 {
 	init();
 	loadMedia();
 	bool quit = false;
-
 	SDL_Event e;
+	Player player(gRenderer);
+	SDL_Rect wall;
+	wall.x = 300;
+	wall.y = 40;
+	wall.w = 40;
+	wall.h = 400;
+	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
-	Dot dot(gRenderer);
 	while( !quit )
 	{
 		while( SDL_PollEvent( &e ) != 0 )
 		{
 			if( e.type == SDL_QUIT )
 				quit = true;
-			dot.handleEvent(e);
+			player.handleEvent(e);
 		}
-		SDL_PollEvent(&e);
+		//Center the camera over the dot
+		camera.x = ( player.getPosX() + Player::PLAYER_WIDTH / 2 ) - SCREEN_WIDTH / 2;
+		camera.y = ( player.getPosY() + Player::PLAYER_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
+
+		//Keep the camera in bounds
+		if( camera.x < 0 )
+		{ 
+			camera.x = 0;
+		}
+		if( camera.y < 0 )
+		{
+			camera.y = 0;
+		}
+		if( camera.x > LEVEL_WIDTH - camera.w )
+		{
+			camera.x = LEVEL_WIDTH - camera.w;
+		}
+		if( camera.y > LEVEL_HEIGHT - camera.h )
+		{
+			camera.y = LEVEL_HEIGHT - camera.h;
+		}
+		wall.x = -camera.x + 400;
+		wall.y = -camera.y + 40;
+		player.move(wall);
 
 		SDL_SetRenderDrawColor( gRenderer, 0xff, 0xff, 0xff, 0xff);
 		SDL_RenderClear( gRenderer );
-		
-		dot.objRender();
-		dot.move();
-		
+
+		SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
+
+		gBGTexture.render( 0, 0, &camera, gRenderer, NULL, NULL);
+		SDL_RenderDrawRect( gRenderer, &wall );
+
+		player.objRender(camera.x,camera.y);
+
 		SDL_RenderPresent(gRenderer);
 	}
 	close();

@@ -12,7 +12,7 @@ class LTexture{
 		bool loadFromFile(std::string path, SDL_Renderer* gRenderer);
 		void free();
 		void setColor(Uint8 red, Uint8 green, Uint8 blue);
-		void render(int x, int y, SDL_Rect* clip, SDL_Renderer* gRenderer);
+		void render(int x, int y, SDL_Rect* clip, SDL_Renderer* gRenderer, int width, int height);
 		int getWidth();
 		int getHeight();
 	private:

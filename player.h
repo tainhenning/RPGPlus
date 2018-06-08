@@ -6,42 +6,29 @@
 #include <stdio.h>
 #include <string>
 #include "loadTexture.h"
+#include "collision.h"
 
-class Dot
+class Player
 {
 	public:
-		static const int DOT_WIDTH = 20;
-		static const int DOT_HEIGHT = 20;
-		static const int DOT_VEL = 5;
-		LTexture dotTexture;
-		Dot(SDL_Renderer* renderer);
+		static const int PLAYER_WIDTH = 20;
+		static const int PLAYER_HEIGHT = 20;
+		static const int PLAYER_VEL = 5;
+		Player(SDL_Renderer* renderer);
 		void handleEvent(SDL_Event& e);
-		void move();
+		void move(SDL_Rect& wall);
 		void render();
+		void objRender(int camX, int camY);
 		int getPosX();
 		int getPosY();
-		void objRender();
 	private:
 		int mPosX, mPosY;
 		int mVelX, mVelY;
 		int frame;
+		int frameBase;
+		int frameEnd;
+		SDL_Rect mCollider;
+		LTexture playerTexture;		
 		SDL_Renderer* renderer;
-		enum playerFramesEnum
-		{
-			PLAYER_BACK1,
-			PLAYER_BACK2,
-			PLAYER_BACK3,
-			PLAYER_FRONT1,
-			PLAYER_FRONT2,
-			PLAYER_FRONT3,
-			PLAYER_LEFT1,
-			PLAYER_LEFT2,
-			PLAYER_LEFT3,
-			PLAYER_RIGHT1,
-			PLAYER_RIGHT2,
-			PLAYER_RIGHT3,
-			PLAYER_TOTAL
-		};
-		LTexture playerFrames [PLAYER_TOTAL]; 
 };
 #endif

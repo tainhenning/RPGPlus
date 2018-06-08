@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project 
-OBJS = main.cpp main.h load.cpp load.h loadTexture.h loadTexture.cpp ltimer.h ltimer.cpp player.h player.cpp
+OBJS = main.cpp main.h load.cpp load.h loadTexture.h loadTexture.cpp ltimer.h ltimer.cpp player.h player.cpp collision.h collision.cpp
 #CC specifies which compiler we're using 
 CC = g++ 
 #INCLUDE_PATHS specifies the additional include paths we'll need 
