@@ -102,12 +102,12 @@ void Player::handleEvent(SDL_Event& e)
 	}
 }
 
-void Player::move()
+void Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 {
 	Collision collider;
 	mPosX += mVelX;
 	mCollider.x = mPosX;
-	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > LEVEL_WIDTH))
+	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth))
 	{
 		mPosX -= mVelX;		
 		mCollider.x = mPosX;
@@ -115,7 +115,7 @@ void Player::move()
 	mPosY += mVelY;
 	mCollider.y = mPosY;
 
-	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > LEVEL_HEIGHT))
+	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight))
 	{
 		mPosY -= mVelY;
 		mCollider.y = mPosY;
@@ -141,10 +141,10 @@ int Player::getPosY()
 	return mPosY;
 }
 
-SDL_Rect Player::cameraMovement(SDL_Rect camera)
+SDL_Rect Player::cameraMovement(SDL_Rect camera, int levelWidth, int levelHeight, int screenWidth, int screenHeight)
 {
-	camera.x = ( mPosX + Player::PLAYER_WIDTH / 2 ) - SCREEN_WIDTH / 2;
-	camera.y = ( mPosY + Player::PLAYER_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
+	camera.x = ( mPosX + PLAYER_WIDTH / 2 ) - screenWidth / 2;
+	camera.y = ( mPosY + PLAYER_HEIGHT / 2 ) - screenHeight / 2;
 	if( camera.x < 0 )
 	{ 
 		camera.x = 0;
@@ -153,13 +153,13 @@ SDL_Rect Player::cameraMovement(SDL_Rect camera)
 	{
 		camera.y = 0;
 	}
-	if( camera.x > LEVEL_WIDTH - camera.w )
+	if( camera.x > levelWidth - camera.w )
 	{
-		camera.x = LEVEL_WIDTH - camera.w;
+		camera.x = levelWidth - camera.w;
 	}
-	if( camera.y > LEVEL_HEIGHT - camera.h )
+	if( camera.y > levelHeight - camera.h )
 	{
-		camera.y = LEVEL_HEIGHT - camera.h;
+		camera.y = levelHeight - camera.h;
 	}	
 	return camera;
 }
