@@ -1,4 +1,23 @@
 #include "player.h"
+const int TOTAL_TILES = 192;
+const int TILE_CENTER = 3;
+const int TILE_TOPLEFT = 11;
+
+bool touchesWall(SDL_Rect box, Tile* tiles[])
+{
+	Collision collider;
+	for (int i = 0; i < TOTAL_TILES; ++i)
+	{
+		if((tiles[i]->getType() >= TILE_CENTER) && (tiles[i]->getType() <= TILE_TOPLEFT))
+		{
+			if(collider.checkCollision(box, tiles[i]->getBox()))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
 Player::Player(SDL_Renderer* rend)
 {
 	mPosX = 100;
@@ -107,7 +126,7 @@ void Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 	Collision collider;
 	mPosX += mVelX;
 	mCollider.x = mPosX;
-	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth))
+	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth) || touchesWall(mCollider, tiles))
 	{
 		mPosX -= mVelX;		
 		mCollider.x = mPosX;
@@ -115,7 +134,7 @@ void Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 	mPosY += mVelY;
 	mCollider.y = mPosY;
 
-	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight))
+	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight) || touchesWall(mCollider, tiles))
 	{
 		mPosY -= mVelY;
 		mCollider.y = mPosY;

@@ -33,5 +33,4 @@ class general{
 };
 
 
-
 #endif

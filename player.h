@@ -34,9 +34,11 @@ class Player
 	private:
 		int mPosX, mPosY;
 		int mVelX, mVelY;
+
 		int frame;
 		int frameBase;
 		int frameEnd;
+		
 		SDL_Rect mCollider;
 		LTexture* playerTexture;		
 		SDL_Renderer* renderer;
