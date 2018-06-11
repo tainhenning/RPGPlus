@@ -1,9 +1,9 @@
 #ifndef TILE_H
 #define TILE_H
+#pragma once
+
 #include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <string>
+
 #include "collision.h"
 #include "loadTexture.h"
 class Tile

@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project 
-OBJS = main.cpp main.h load.cpp load.h loadTexture.h loadTexture.cpp ltimer.h ltimer.cpp player.h player.cpp collision.h collision.cpp window.h window.cpp tile.h tile.cpp globals.h
+OBJS = main.cpp general.h general.cpp load.cpp load.h loadTexture.h loadTexture.cpp ltimer.h ltimer.cpp player.h player.cpp collision.h collision.cpp window.h window.cpp tile.h tile.cpp globals.h
 #CC specifies which compiler we're using 
 CC = g++ 
 #INCLUDE_PATHS specifies the additional include paths we'll need 
@@ -13,7 +13,7 @@ COMPILER_FLAGS = -w -Wl,-subsystem,windows
 #LINKER_FLAGS specifies the libraries we're linking against 
 LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
 #OBJ_NAME specifies the name of our exectuable 
-OBJ_NAME = hellosdl
+OBJ_NAME = RPGPLUS
 #This is the target that compiles our executable 
 all : $(OBJS) 
 	$(CC) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)

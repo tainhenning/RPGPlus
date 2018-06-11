@@ -1,9 +1,9 @@
 #ifndef COLLISION_H
 #define COLLISION_H
+#pragma once
+
 #include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <string>
+
 class Collision
 {
 	public:

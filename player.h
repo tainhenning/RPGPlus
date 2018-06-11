@@ -1,10 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#pragma once
 
 #include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <string>
+
 #include "loadTexture.h"
 #include "collision.h"
 #include "tile.h"

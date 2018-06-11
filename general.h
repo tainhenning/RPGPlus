@@ -1,10 +1,13 @@
 #ifndef MAIN_H
 #define MAIN_H
+#pragma once
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <sstream>
+
 #include "globals.h"
 #include "load.h"
 #include "player.h"
@@ -12,7 +15,6 @@
 #include "loadTexture.h"
 #include "window.h"
 #include "tile.h"
-#include <sstream>
 
 class general{
 	public:
@@ -29,8 +31,6 @@ class general{
 		bool loadMedia(Tile* tiles[]);
 		void close(Tile* tiles[]);
 		bool touchesWall(SDL_Rect box, Tile* tiles[]);
-		bool setTiles(Tile* tiles[]);
+		bool setTiles(Tile* tiles[], std::string file);
 };
-
-
 #endif

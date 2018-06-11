@@ -1,4 +1,6 @@
 #include "player.h"
+#include "general.h"
+#include <stdio.h>
 const int TOTAL_TILES = 192;
 const int TILE_CENTER = 3;
 const int TILE_TOPLEFT = 11;
@@ -13,6 +15,14 @@ bool touchesWall(SDL_Rect box, Tile* tiles[])
 			if(collider.checkCollision(box, tiles[i]->getBox()))
 			{
 				return true;
+			}
+		}
+		if(tiles[i]->getType() == 02)
+		{
+			if(collider.checkCollision(box, tiles[i]->getBox()))
+			{
+				general gen;
+				
 			}
 		}
 	}

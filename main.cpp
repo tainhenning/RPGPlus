@@ -1,4 +1,46 @@
-#include "main.h"
+#include "general.h"
+#include <fstream>
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+const int SCREEN_BPP = 32;
+
+const int FRAMES_PER_SECOND = 20;
+
+const int LEVEL_WIDTH = 1280;
+const int LEVEL_HEIGHT = 960;
+
+const int TILE_WIDTH = 80;
+const int TILE_HEIGHT = 80;
+const int TOTAL_TILES = 192;
+const int TOTAL_TILE_SPRITES = 12;
+
+const int TILE_RED = 0;
+const int TILE_GREEN = 1;
+const int TILE_BLUE = 2;
+const int TILE_CENTER = 3;
+const int TILE_TOP = 4;
+const int TILE_TOPRIGHT = 5;
+const int TILE_RIGHT = 6;
+const int TILE_BOTTOMRIGHT = 7;
+const int TILE_BOTTOM = 8;
+const int TILE_BOTTOMLEFT = 9;
+const int TILE_LEFT = 10;
+const int TILE_TOPLEFT = 11;
+
+SDL_Surface *screen = NULL;
+SDL_Surface *tileSheet = NULL;
+
+SDL_Event event;
+
+SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+LTexture gTileTexture;
+LTexture gBGTexture;
+SDL_Surface* gScreenSurface = NULL;
+SDL_Surface* gCurrentSurface = NULL;
+SDL_Renderer* gRenderer = NULL;
+LTexture gSceneTexture;
+LWindow gWindow;
+SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 
 bool general::init()
 {
@@ -58,7 +100,7 @@ bool general::loadMedia(Tile* tiles[])
 		printf("Failed to load tile texture\n");
 		success = false;
 	}
-	if(!setTiles(tiles))
+	if(!setTiles(tiles, "maps/lazy.map"))
 	{
 		printf("Failed to load tile set!\n");
 		success = false;
@@ -66,11 +108,11 @@ bool general::loadMedia(Tile* tiles[])
 
 	return success;
 }
-bool general::setTiles(Tile* tiles[])
+bool general::setTiles(Tile* tiles[], std::string file)
 {
 	bool tilesLoaded = true;
 	int x = 0, y = 0;
-	std::ifstream map("maps/lazy.map");
+	std::ifstream map(file);
 	if(!map.is_open())
 	{
 		printf("Unable to load map file!\n");
@@ -203,6 +245,14 @@ int main( int argc, char* args[])
 		{
 			if( e.type == SDL_QUIT )
 				quit = true;
+			if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
+			{
+				switch(e.key.keysym.sym)
+				{
+					case SDLK_SPACE: 
+						general.setTiles(tiles, "maps/lazy2.map");
+				}
+			}
 			player.handleEvent(e);
 			gWindow.handleEvent(e, gRenderer);
 		}

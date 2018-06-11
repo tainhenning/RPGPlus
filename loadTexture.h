@@ -1,5 +1,6 @@
 #ifndef LTEXTURE_H
 #define LTEXTURE_H
+#pragma once
 
 #include <SDL.h>
 #include <SDL_image.h>

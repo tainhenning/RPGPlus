@@ -1,10 +1,9 @@
 #ifndef LTIMER_H
 #define LTIMER_H
+#pragma once
 
 #include <SDL.h>
-#include <SDL_image.h>
 #include <stdio.h>
-#include <string>
 class LTimer{
 	public:
 		LTimer();
