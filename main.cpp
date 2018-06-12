@@ -2,30 +2,16 @@
 #include <fstream>
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const int SCREEN_BPP = 32;
 
 const int FRAMES_PER_SECOND = 20;
 
-const int LEVEL_WIDTH = 1280;
-const int LEVEL_HEIGHT = 960;
+const int LEVEL_WIDTH = 1440;
+const int LEVEL_HEIGHT = 1440;
 
-const int TILE_WIDTH = 80;
-const int TILE_HEIGHT = 80;
-const int TOTAL_TILES = 192;
+const int TILE_WIDTH = 48;
+const int TILE_HEIGHT = 48;
+const int TOTAL_TILES = 900;
 const int TOTAL_TILE_SPRITES = 12;
-
-const int TILE_RED = 0;
-const int TILE_GREEN = 1;
-const int TILE_BLUE = 2;
-const int TILE_CENTER = 3;
-const int TILE_TOP = 4;
-const int TILE_TOPRIGHT = 5;
-const int TILE_RIGHT = 6;
-const int TILE_BOTTOMRIGHT = 7;
-const int TILE_BOTTOM = 8;
-const int TILE_BOTTOMLEFT = 9;
-const int TILE_LEFT = 10;
-const int TILE_TOPLEFT = 11;
 
 SDL_Surface *screen = NULL;
 SDL_Surface *tileSheet = NULL;
@@ -40,7 +26,8 @@ SDL_Surface* gCurrentSurface = NULL;
 SDL_Renderer* gRenderer = NULL;
 LTexture gSceneTexture;
 LWindow gWindow;
-SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
+SDL_Rect gTileClips[30];
+
 int currentTiles = 0;
 bool general::init()
 {
@@ -95,12 +82,7 @@ bool general::loadMedia(Tile* tiles[])
 		printf("Failed to load background texture\n");
 		success = false;
 	}
-	if(!gTileTexture.loadFromFile("images/tiles.png", gRenderer))
-	{
-		printf("Failed to load tile texture\n");
-		success = false;
-	}
-	if(!gTileTexture.loadFromFile("images/tiles.png", gRenderer))
+	if(!gTileTexture.loadFromFile("images/dungeon_tiles.png", gRenderer))
 	{
 		printf("Failed to load tile texture\n");
 		success = false;
@@ -158,65 +140,37 @@ bool general::setTiles(Tile* tiles[], std::string file)
 		}
 		if(tilesLoaded)
 		{
-			gTileClips[ TILE_RED ].x = 0;
-			gTileClips[ TILE_RED ].y = 0;
-			gTileClips[ TILE_RED ].w = TILE_WIDTH;
-			gTileClips[ TILE_RED ].h = TILE_HEIGHT;
+			for (int i = 0; i < 30; ++i)
+			{
+				gTileClips[i].y = (i%3)*48;
+				gTileClips[i].w = TILE_WIDTH;
+				gTileClips[i].h = TILE_HEIGHT;
+			}
+			gTileClips[ 0 ].x = 0;
+			gTileClips[ 1 ].x = 0;
+			gTileClips[ 2 ].x = 0;
+			gTileClips[ 3 ].x = 48;
+			gTileClips[ 4 ].x = 48;
+			gTileClips[ 5 ].x = 48;
+			gTileClips[ 6 ].x = 96;
+			gTileClips[ 7 ].x = 96;
+			gTileClips[ 8 ].x = 96;
+			gTileClips[ 9 ].x = 144;
+			gTileClips[ 10 ].x = 144;
+			gTileClips[ 11 ].x = 144;
+			gTileClips[ 12 ].x = 192;					
+			gTileClips[ 13 ].x = 192;					
+			gTileClips[ 14 ].x = 192;					
+			gTileClips[ 15 ].x = 240;					
+			gTileClips[ 16 ].x = 240;					
+			gTileClips[ 17 ].x = 240;					
+			gTileClips[ 18 ].x = 288;					
+			gTileClips[ 19 ].x = 288;					
+			gTileClips[ 20 ].x = 288;					
+			gTileClips[ 21 ].x = 336;					
+			gTileClips[ 22 ].x = 336;					
+			gTileClips[ 23 ].x = 336;				
 
-			gTileClips[ TILE_GREEN ].x = 0;
-			gTileClips[ TILE_GREEN ].y = 80;
-			gTileClips[ TILE_GREEN ].w = TILE_WIDTH;
-			gTileClips[ TILE_GREEN ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_BLUE ].x = 0;
-			gTileClips[ TILE_BLUE ].y = 160;
-			gTileClips[ TILE_BLUE ].w = TILE_WIDTH;
-			gTileClips[ TILE_BLUE ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_TOPLEFT ].x = 80;
-			gTileClips[ TILE_TOPLEFT ].y = 0;
-			gTileClips[ TILE_TOPLEFT ].w = TILE_WIDTH;
-			gTileClips[ TILE_TOPLEFT ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_LEFT ].x = 80;
-			gTileClips[ TILE_LEFT ].y = 80;
-			gTileClips[ TILE_LEFT ].w = TILE_WIDTH;
-			gTileClips[ TILE_LEFT ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_BOTTOMLEFT ].x = 80;
-			gTileClips[ TILE_BOTTOMLEFT ].y = 160;
-			gTileClips[ TILE_BOTTOMLEFT ].w = TILE_WIDTH;
-			gTileClips[ TILE_BOTTOMLEFT ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_TOP ].x = 160;
-			gTileClips[ TILE_TOP ].y = 0;
-			gTileClips[ TILE_TOP ].w = TILE_WIDTH;
-			gTileClips[ TILE_TOP ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_CENTER ].x = 160;
-			gTileClips[ TILE_CENTER ].y = 80;
-			gTileClips[ TILE_CENTER ].w = TILE_WIDTH;
-			gTileClips[ TILE_CENTER ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_BOTTOM ].x = 160;
-			gTileClips[ TILE_BOTTOM ].y = 160;
-			gTileClips[ TILE_BOTTOM ].w = TILE_WIDTH;
-			gTileClips[ TILE_BOTTOM ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_TOPRIGHT ].x = 240;
-			gTileClips[ TILE_TOPRIGHT ].y = 80;
-			gTileClips[ TILE_TOPRIGHT ].w = TILE_WIDTH;
-			gTileClips[ TILE_TOPRIGHT ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_RIGHT ].x = 240;
-			gTileClips[ TILE_RIGHT ].y = 80;
-			gTileClips[ TILE_RIGHT ].w = TILE_WIDTH;
-			gTileClips[ TILE_RIGHT ].h = TILE_HEIGHT;
-
-			gTileClips[ TILE_BOTTOMRIGHT ].x = 240;
-			gTileClips[ TILE_BOTTOMRIGHT ].y = 160;
-			gTileClips[ TILE_BOTTOMRIGHT ].w = TILE_WIDTH;
-			gTileClips[ TILE_BOTTOMRIGHT ].h = TILE_HEIGHT;						
 		}
 	}
 	map.close();
@@ -237,7 +191,7 @@ bool switchToLevel2(Tile* tiles[])
 	general general;
 	if(currentTiles != 2)
 	{
-		general.setTiles(tiles, "maps/lazy2.map");
+		general.setTiles(tiles, "maps/lazy1.map");
 		currentTiles = 2;
 	}
 	else

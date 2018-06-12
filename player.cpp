@@ -10,18 +10,11 @@ int touchesWall(SDL_Rect box, Tile* tiles[])
 	Collision collider;
 	for (int i = 0; i < TOTAL_TILES; ++i)
 	{
-		if((tiles[i]->getType() >= TILE_CENTER) && (tiles[i]->getType() <= TILE_TOPLEFT))
+		if(tiles[i]->getType() == 2)
 		{
 			if(collider.checkCollision(box, tiles[i]->getBox()))
 			{
 				return 1;
-			}
-		}
-		if(tiles[i]->getType() == 02)
-		{
-			if(collider.checkCollision(box, tiles[i]->getBox()))
-			{
-				return 2;
 			}
 		}
 	}
@@ -135,7 +128,7 @@ int Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 	Collision collider;
 	mPosX += mVelX;
 	mCollider.x = mPosX;
-	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth) || touchesWall(mCollider, tiles) == 1)
+	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth))
 	{
 		mPosX -= mVelX;		
 		mCollider.x = mPosX;
@@ -143,7 +136,7 @@ int Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 	mPosY += mVelY;
 	mCollider.y = mPosY;
 
-	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight) || touchesWall(mCollider, tiles) == 1)
+	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight))
 	{
 		mPosY -= mVelY;
 		mCollider.y = mPosY;
