@@ -41,7 +41,7 @@ SDL_Renderer* gRenderer = NULL;
 LTexture gSceneTexture;
 LWindow gWindow;
 SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
-
+int currentTiles = 0;
 bool general::init()
 {
 	bool success = true;
@@ -100,6 +100,11 @@ bool general::loadMedia(Tile* tiles[])
 		printf("Failed to load tile texture\n");
 		success = false;
 	}
+	if(!gTileTexture.loadFromFile("images/tiles.png", gRenderer))
+	{
+		printf("Failed to load tile texture\n");
+		success = false;
+	}
 	if(!setTiles(tiles, "maps/lazy.map"))
 	{
 		printf("Failed to load tile set!\n");
@@ -110,6 +115,7 @@ bool general::loadMedia(Tile* tiles[])
 }
 bool general::setTiles(Tile* tiles[], std::string file)
 {
+	currentTiles = 1;
 	bool tilesLoaded = true;
 	int x = 0, y = 0;
 	std::ifstream map(file);
@@ -226,6 +232,19 @@ void general::close(Tile* tiles[])
 	SDL_Quit();
 }
 
+bool switchToLevel2(Tile* tiles[])
+{
+	general general;
+	if(currentTiles != 2)
+	{
+		general.setTiles(tiles, "maps/lazy2.map");
+		currentTiles = 2;
+	}
+	else
+		return false;
+	return true;
+}
+
 int main( int argc, char* args[])
 {
 	Tile* tiles[TOTAL_TILES];
@@ -258,7 +277,9 @@ int main( int argc, char* args[])
 		}
 		if(!gWindow.isMinimized())
 		{
-			player.move(tiles, LEVEL_WIDTH, LEVEL_HEIGHT);
+
+			if(player.move(tiles, LEVEL_WIDTH, LEVEL_HEIGHT) == 1)
+				switchToLevel2(tiles);
 			camera = player.cameraMovement(camera, LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 			SDL_SetRenderDrawColor( gRenderer, 0xff, 0xff, 0xff, 0xff);

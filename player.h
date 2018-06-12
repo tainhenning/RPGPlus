@@ -17,7 +17,7 @@ class Player
 		Player(SDL_Renderer* renderer);
 
 		void handleEvent(SDL_Event& e);
-		void move(Tile *tiles[], int levelWidth, int levelHeight);
+		int move(Tile *tiles[], int levelWidth, int levelHeight);
 		void render(SDL_Rect& camera);
 		void objRender(int camX, int camY);
 		int getPosX();

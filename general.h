@@ -32,5 +32,7 @@ class general{
 		void close(Tile* tiles[]);
 		bool touchesWall(SDL_Rect box, Tile* tiles[]);
 		bool setTiles(Tile* tiles[], std::string file);
+		bool setTileGrass(Tile* tiles[], std::string file);
+
 };
 #endif

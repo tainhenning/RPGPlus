@@ -5,7 +5,7 @@ const int TOTAL_TILES = 192;
 const int TILE_CENTER = 3;
 const int TILE_TOPLEFT = 11;
 
-bool touchesWall(SDL_Rect box, Tile* tiles[])
+int touchesWall(SDL_Rect box, Tile* tiles[])
 {
 	Collision collider;
 	for (int i = 0; i < TOTAL_TILES; ++i)
@@ -14,19 +14,18 @@ bool touchesWall(SDL_Rect box, Tile* tiles[])
 		{
 			if(collider.checkCollision(box, tiles[i]->getBox()))
 			{
-				return true;
+				return 1;
 			}
 		}
 		if(tiles[i]->getType() == 02)
 		{
 			if(collider.checkCollision(box, tiles[i]->getBox()))
 			{
-				general gen;
-				
+				return 2;
 			}
 		}
 	}
-	return false;
+	return 0;
 }
 Player::Player(SDL_Renderer* rend)
 {
@@ -131,12 +130,12 @@ void Player::handleEvent(SDL_Event& e)
 	}
 }
 
-void Player::move(Tile *tiles[], int levelWidth, int levelHeight)
+int Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 {
 	Collision collider;
 	mPosX += mVelX;
 	mCollider.x = mPosX;
-	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth) || touchesWall(mCollider, tiles))
+	if((mPosX < 0) || (mPosX + PLAYER_WIDTH > levelWidth) || touchesWall(mCollider, tiles) == 1)
 	{
 		mPosX -= mVelX;		
 		mCollider.x = mPosX;
@@ -144,7 +143,7 @@ void Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 	mPosY += mVelY;
 	mCollider.y = mPosY;
 
-	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight) || touchesWall(mCollider, tiles))
+	if((mPosY < 0) || (mPosY + PLAYER_HEIGHT > levelHeight) || touchesWall(mCollider, tiles) == 1)
 	{
 		mPosY -= mVelY;
 		mCollider.y = mPosY;
@@ -153,6 +152,8 @@ void Player::move(Tile *tiles[], int levelWidth, int levelHeight)
 	++frame;
 	if(frame/6 >= 3)
 		frame = 0;
+	if(touchesWall(mCollider, tiles) == 2)
+		return 1;
 }
 
 void Player::objRender(int camX, int camY)
