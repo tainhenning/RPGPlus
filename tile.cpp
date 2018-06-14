@@ -5,8 +5,8 @@ Tile::Tile(int x, int y, int tileType, int tileWidth, int tileHeight)
 	mBox.x = x;
 	mBox.y = y;
 
-	mBox.w = tileWidth;
-	mBox.h = tileHeight;
+	mBox.w = 48;
+	mBox.h = 48;
 
 	mType = tileType;
 }
@@ -28,4 +28,14 @@ int Tile::getType()
 SDL_Rect Tile::getBox()
 {
 	return mBox;
+}
+
+void Tile::setBoxX(int x)
+{
+	mBox.x = x;
+}
+void Tile::setBoxY(int y)
+{
+	mBox.y = y;
+
 }

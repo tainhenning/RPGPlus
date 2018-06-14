@@ -17,6 +17,10 @@ class Tile
 		int getType();
 		SDL_Rect getBox();
 		void trender(SDL_Rect& camera,SDL_Rect tileClips[12], SDL_Renderer* rend, LTexture tileTexture);
+		void setBoxY(int y);
+		void setBoxX(int x);
+
+
 };
 
 

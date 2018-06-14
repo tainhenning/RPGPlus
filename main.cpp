@@ -231,20 +231,18 @@ int main( int argc, char* args[])
 		}
 		if(!gWindow.isMinimized())
 		{
-
-			if(player.move(tiles, LEVEL_WIDTH, LEVEL_HEIGHT) == 1)
-				switchToLevel2(tiles);
-			camera = player.cameraMovement(camera, LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
-
 			SDL_SetRenderDrawColor( gRenderer, 0xff, 0xff, 0xff, 0xff);
 			SDL_RenderClear( gRenderer );
 
-			gBGTexture.render( 0, 0, &camera, gRenderer, NULL, NULL);
+			camera = player.cameraMovement(camera, LEVEL_WIDTH, LEVEL_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+			gBGTexture.render( 0, 0, &camera, gRenderer, NULL, NULL);
 			for(int i = 0; i < TOTAL_TILES; ++i)
 			{
 				gTileTexture.render( tiles[i]->getBox().x - camera.x,  tiles[i]->getBox().y - camera.y, &gTileClips[tiles[i]->getType()], gRenderer,NULL,NULL);
 			}
+			player.move(tiles, LEVEL_WIDTH, LEVEL_HEIGHT);
+
 			player.objRender(camera.x,camera.y);
 
 			SDL_RenderPresent(gRenderer);			
